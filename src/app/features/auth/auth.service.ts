@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { Auth, authState, createUserWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
+import { BehaviorSubject, from, switchMap } from 'rxjs';
+import { SignUpCredentials } from './interfaces/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -7,16 +9,17 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 export class AuthService {
 
   private authState = new BehaviorSubject<Object | null>(null);
+  readonly isLoggedIn$ = authState(this.auth);
 
-  readonly isLoggedIn$ = this.authState.asObservable();
-
-  constructor() { }
+  constructor(private auth: Auth){}
 
   signIn(credentials: Object) {
     this.authState.next(credentials)
   }
 
-  signUp(user: Object) {
-    this.authState.next(user)
+  signUp({ email, password, displayName }: SignUpCredentials) {
+    return from(createUserWithEmailAndPassword(this.auth, email, password)).pipe(
+      switchMap(({ user }) => updateProfile(user, { displayName }))
+    )
   }
 }

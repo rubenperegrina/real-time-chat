@@ -1,21 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormContainerComponent } from '../form-container/form-container.component';
 import { AuthService } from '../auth.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormContainerComponent, MatFormFieldModule],
+  imports: [CommonModule, ReactiveFormsModule, FormContainerComponent, MatFormFieldModule, MatSnackBarModule],
 })
 export class SignUpComponent {
   form!: FormGroup;
 
-  constructor(private auth: AuthService) {}
+  private auth = inject(AuthService);
+  private router = inject(Router);
+  private snackbar = inject(MatSnackBar);
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -26,7 +30,9 @@ export class SignUpComponent {
   }
 
   signUp() {
-    console.log('signup with: ', this.form.value);
-    this.auth.signUp(this.form.value);
+    this.auth.signUp(this.form.value).subscribe({
+      next: () => this.router.navigate(['chat']),
+      error: (error) => this.snackbar.open(error.message)
+    });
   }
 }

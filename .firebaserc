@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "real-time-chat-angular": {
+      "hosting": {
+        "real-time-chat": [
+          "real-time-chat-angular-a9c81"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "real-time-chat-angular"
+  }
+}
