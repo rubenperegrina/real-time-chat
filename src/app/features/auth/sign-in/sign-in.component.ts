@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { FormContainerComponent } from '../form-container/form-container.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-sign-in',
@@ -11,12 +13,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   styleUrls: ['./sign-in.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormContainerComponent, MatFormFieldModule],
+  imports: [CommonModule, ReactiveFormsModule, FormContainerComponent, MatFormFieldModule, MatSnackBarModule],
 })
 export class SignInComponent {
   form!: FormGroup;
 
-  constructor(private auth: AuthService) { }
+  private auth = inject(AuthService);
+  private router = inject(Router);
+  private snackbar = inject(MatSnackBar);
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -26,7 +30,9 @@ export class SignInComponent {
   }
 
   signIn() {
-    console.log('signin with: ', this.form);
-    this.auth.signIn(this.form.value);
+    this.auth.signIn(this.form.value).subscribe({
+      next: () => this.router.navigate(['chat']),
+      error: (error) => this.snackbar.open(error.message)
+    });
   }
 }

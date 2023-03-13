@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthService } from './features/auth/auth.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
@@ -13,5 +13,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 })
 export class AppComponent {
   title = 'real-time-chat';
-  constructor(public auth: AuthService) {}
+  public auth = inject(AuthService);
+  private router = inject(Router);
+
+  signOut() {
+    this.auth.signOut().subscribe({
+      next: () => this.router.navigate(['signin'])
+    });
+  }
 }
