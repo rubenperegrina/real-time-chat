@@ -6,6 +6,8 @@ import { FormContainerComponent } from '../form-container/form-container.compone
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-sign-in',
@@ -13,7 +15,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   styleUrls: ['./sign-in.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormContainerComponent, MatFormFieldModule, MatSnackBarModule],
+  imports: [CommonModule, ReactiveFormsModule, FormContainerComponent, MatFormFieldModule, MatInputModule, MatButtonModule, MatSnackBarModule],
 })
 export class SignInComponent {
   form!: FormGroup;

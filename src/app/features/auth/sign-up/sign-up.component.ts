@@ -6,13 +6,15 @@ import { AuthService } from '../auth.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormContainerComponent, MatFormFieldModule, MatSnackBarModule],
+  imports: [CommonModule, ReactiveFormsModule, FormContainerComponent, MatFormFieldModule, MatButtonModule, MatInputModule, MatSnackBarModule],
 })
 export class SignUpComponent {
   form!: FormGroup;
